@@ -35,7 +35,7 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # bun files
-*bun
+bun*
 
 # .env files
 *.env
