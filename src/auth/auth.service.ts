@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import {
+    BadRequestException,
+    Injectable,
+    UnauthorizedException,
+} from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { JwtService } from "@nestjs/jwt";
 
@@ -18,18 +22,20 @@ export class AuthService {
     async signin(email: string, password: string, role: UserRole) {
         const user = await this.user.findOne({
             email,
-            password,
             role: { $in: [role] },
         });
 
-        if (!user) throw new BadRequestException("Invalid credential");
+        /* check if user exists or if exists check if the password matches or not */
+        if (!user || !(await user.matchPassword(password)))
+            throw new UnauthorizedException("Invalid credential");
 
         return user;
     }
 
-    async signup(
-        userDetails: SignupDto,
-    ): Promise<{ newUser: UserType; token: string }> {
+    async signup(userDetails: SignupDto): Promise<{
+        newUser: UserType;
+        token: string;
+    }> {
         /* Checking is user exist */
         const isUserExist = await this.user.exists({
             email: userDetails.email,

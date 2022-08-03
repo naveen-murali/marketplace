@@ -2,8 +2,8 @@ import { Global, Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 
-import { mongoConnection } from "./utils";
-import { User, UserSchema } from "./model";
+import { mongoConnection } from "./configs";
+import { User, userSchemaFactory } from "./model";
 
 @Global()
 @Module({
@@ -12,7 +12,12 @@ import { User, UserSchema } from "./model";
             useFactory: mongoConnection,
             inject: [ConfigService],
         }),
-        MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+        MongooseModule.forFeatureAsync([
+            {
+                name: User.name,
+                useFactory: userSchemaFactory,
+            },
+        ]),
     ],
     exports: [MongooseModule],
 })

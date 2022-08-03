@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { CallbackWithoutResultAndOptionalError, Model } from "mongoose";
+import * as bcrypt from "bcrypt";
 
 import { UserRole } from "../utils";
 
@@ -27,6 +28,28 @@ export class User {
     role: UserRole[];
 }
 
-export type UserModel = Model<User & Document>;
+export type UserModel = Model<
+    User & Document & { matchPassword: (password: string) => Promise<boolean> }
+>;
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+export const userSchemaFactory = () => {
+    UserSchema.methods.matchPassword = async function matchPassword(
+        enteredPassword: string,
+    ) {
+        return await bcrypt.compare(enteredPassword, this.password);
+    };
+
+    UserSchema.pre(
+        "save",
+        async function (next: CallbackWithoutResultAndOptionalError) {
+            if (!this.isModified("password")) next();
+
+            let salt = await bcrypt.genSalt(10);
+            this.password = await bcrypt.hash(this.password, salt);
+        },
+    );
+
+    return UserSchema;
+};
