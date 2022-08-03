@@ -1,34 +1,25 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
+import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-local";
 
 import { StrategyType } from "../utils";
-import { User, UserModel } from "../../mongo/model";
+import { AuthService } from "../auth.service";
+import { UserRole } from "src/mongo/utils";
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(
     Strategy,
     StrategyType.LOCAL,
 ) {
-    constructor(@InjectModel(User.name) private readonly User: UserModel) {
+    constructor(private readonly _authService: AuthService) {
         super({ usernameField: "email", passReqToCallback: true });
     }
 
     async validate(
-        req: { body: { role: string } } & Request,
+        req: { body: { role: UserRole } } & Request,
         email: string,
         password: string,
     ) {
-        const { role } = req.body;
-        const user = await this.User.findOne({
-            email,
-            password,
-            role: { $in: [role] },
-        });
-
-        if (!user) throw new BadRequestException("Invalid credential");
-
-        return user;
+        return this._authService.signin(email, password, req.body.role);
     }
 }

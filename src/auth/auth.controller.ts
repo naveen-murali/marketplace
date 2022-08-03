@@ -13,8 +13,9 @@ import { AuthGuard } from "@nestjs/passport";
 import { SignupDto } from "./dto";
 import { StrategyType } from "./utils";
 import { AuthService } from "./auth.service";
-import { UserEntity } from "./entity/user.entity";
+import { User } from "src/common/decorators";
 import { UserType } from "src/mongo/interfaces";
+import { UserEntity } from "./entity/user.entity";
 
 @Controller("auth")
 @UseInterceptors(ClassSerializerInterceptor)
@@ -24,7 +25,7 @@ export class AuthController {
     @Post("/login")
     @UseGuards(AuthGuard(StrategyType.LOCAL))
     @HttpCode(HttpStatus.OK)
-    login(@Body() user: UserType): UserEntity {
+    login(@User() user: UserType): UserEntity {
         const token = this._authService.createToken({
             _id: user._id.toString(),
         });
@@ -35,9 +36,6 @@ export class AuthController {
     async signup(@Body() userDetails: SignupDto): Promise<UserEntity> {
         const { newUser, token } = await this._authService.signup(userDetails);
 
-        return new UserEntity(
-            newUser,
-            token,
-        );
+        return new UserEntity(newUser, token);
     }
 }

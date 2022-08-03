@@ -4,6 +4,7 @@ import { JwtService } from "@nestjs/jwt";
 
 import { SignupDto } from "./dto";
 import { PayloadType } from "./interfaces";
+import { UserRole } from "src/mongo/utils";
 import { UserType } from "src/mongo/interfaces";
 import { User, UserModel } from "src/mongo/model";
 
@@ -13,6 +14,18 @@ export class AuthService {
         @InjectModel(User.name) private user: UserModel,
         private readonly _jwtService: JwtService,
     ) {}
+
+    async signin(email: string, password: string, role: UserRole) {
+        const user = await this.user.findOne({
+            email,
+            password,
+            role: { $in: [role] },
+        });
+
+        if (!user) throw new BadRequestException("Invalid credential");
+
+        return user;
+    }
 
     async signup(
         userDetails: SignupDto,
