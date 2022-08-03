@@ -1,19 +1,24 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
-import { APP_INTERCEPTOR } from "@nestjs/core";
 
 /* app controller and service */
 import { AppService } from "./app.service";
 import { AppController } from "./app.controller";
-import { LoggingInterceptor } from "./common/logging.interceptor";
-import { MongoModule } from './mongo/mongo.module';
+
+/* external modules */
+import { MongoModule } from "./mongo/mongo.module";
+import { AuthModule } from "./auth/auth.module";
+import { JwtModule } from "@nestjs/jwt";
+import { CommonModule } from "./common/common.module";
 
 @Module({
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
         }),
+        CommonModule,
         MongoModule,
+        AuthModule,
     ],
     controllers: [AppController],
     providers: [AppService],

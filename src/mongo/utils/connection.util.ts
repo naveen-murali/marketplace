@@ -21,5 +21,7 @@ export const mongoConnection = (
                 console.log("\x1b[33m[MongoDB]: \x1b[31m ERROR \x1b[0m");
                 console.error(error);
             });
+
+        return connection;
     },
 });
