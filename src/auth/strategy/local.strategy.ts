@@ -2,8 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-local";
 
-import { StrategyType } from "../utils";
-import { AuthService } from "../auth.service";
+import { StrategyType } from "../../auth/utils";
+import { AuthService } from "../../auth/auth.service";
 import { UserRole } from "src/mongo/utils";
 
 @Injectable()

@@ -1,3 +1,3 @@
-export interface PayloadType {
+export interface JwtPayloadType {
     _id: string;
 }

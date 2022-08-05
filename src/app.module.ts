@@ -10,6 +10,7 @@ import { MongoModule } from "./mongo/mongo.module";
 import { AuthModule } from "./auth/auth.module";
 import { JwtModule } from "@nestjs/jwt";
 import { CommonModule } from "./common/common.module";
+import { SellerModule } from './seller/seller.module';
 
 @Module({
     imports: [
@@ -19,6 +20,7 @@ import { CommonModule } from "./common/common.module";
         CommonModule,
         MongoModule,
         AuthModule,
+        SellerModule,
     ],
     controllers: [AppController],
     providers: [AppService],

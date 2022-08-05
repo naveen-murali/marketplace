@@ -7,7 +7,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { JwtService } from "@nestjs/jwt";
 
 import { SignupDto } from "./dto";
-import { PayloadType } from "./interfaces";
+import { JwtPayloadType } from "./interfaces";
 import { UserRole } from "src/mongo/utils";
 import { UserType } from "src/mongo/interfaces";
 import { User, UserModel } from "src/mongo/model";
@@ -20,6 +20,8 @@ export class AuthService {
     ) {}
 
     async signin(email: string, password: string, role: UserRole) {
+        if (!role) throw new BadRequestException("role field is missing");
+
         const user = await this.user.findOne({
             email,
             role: { $in: [role] },
@@ -55,7 +57,7 @@ export class AuthService {
         return { newUser, token };
     }
 
-    createToken(payload: PayloadType): string {
+    createToken(payload: JwtPayloadType): string {
         return this._jwtService.sign(payload);
     }
 }

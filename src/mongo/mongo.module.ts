@@ -5,7 +5,6 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { mongoConnection } from "./configs";
 import { User, userSchemaFactory } from "./model";
 
-@Global()
 @Module({
     imports: [
         MongooseModule.forRootAsync({
