@@ -6,11 +6,11 @@ import { AppService } from "./app.service";
 import { AppController } from "./app.controller";
 
 /* external modules */
-import { MongoModule } from "./mongo/mongo.module";
 import { AuthModule } from "./auth/auth.module";
+import { BuyerModule } from "./buyer/buyer.module";
+import { MongoModule } from "./mongo/mongo.module";
 import { CommonModule } from "./common/common.module";
 import { SellerModule } from "./seller/seller.module";
-import { BuyerModule } from "./buyer/buyer.module";
 
 @Module({
     imports: [

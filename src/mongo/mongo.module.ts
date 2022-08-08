@@ -12,7 +12,6 @@ import {
     userSchemaFactory,
 } from "./model";
 
-@Global()
 @Module({
     imports: [
         MongooseModule.forRootAsync({

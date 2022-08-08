@@ -5,10 +5,11 @@ import {
     ForbiddenException,
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
-import { UserType } from "src/mongo/interfaces";
-import { UserRole } from "src/mongo/utils";
 
 import { ROLE_META } from "../decorators";
+import { UserRole } from "src/mongo/utils";
+import { UserType } from "src/mongo/interfaces";
+
 
 @Injectable()
 export class RoleGuard implements CanActivate {

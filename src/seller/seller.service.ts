@@ -2,9 +2,9 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Types } from "mongoose";
 
+import { ItemsDto } from "./dto";
 import { CatalogType } from "src/mongo/interfaces";
 import { Catalog, CatalogModel, Item, ItemModel } from "src/mongo/model";
-import { ItemsDto } from "./dto";
 
 @Injectable()
 export class SellerService {

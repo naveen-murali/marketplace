@@ -7,8 +7,8 @@ import { InjectModel } from "@nestjs/mongoose";
 import { JwtService } from "@nestjs/jwt";
 
 import { SignupDto } from "./dto";
-import { JwtPayloadType } from "./interfaces";
 import { UserRole } from "src/mongo/utils";
+import { JwtPayloadType } from "./interfaces";
 import { UserType } from "src/mongo/interfaces";
 import { User, UserModel } from "src/mongo/model";
 

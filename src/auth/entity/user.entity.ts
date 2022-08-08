@@ -1,7 +1,8 @@
 import { Exclude, Transform } from "class-transformer";
 import { Document } from "mongoose";
-import { UserType } from "src/mongo/interfaces";
+
 import { UserRole } from "src/mongo/utils";
+import { UserType } from "src/mongo/interfaces";
 
 export class UserEntity {
     @Transform((id) => id.value.toString())
