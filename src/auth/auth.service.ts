@@ -15,14 +15,14 @@ import { User, UserModel } from "src/mongo/model";
 @Injectable()
 export class AuthService {
     constructor(
-        @InjectModel(User.name) private user: UserModel,
+        @InjectModel(User.name) private _user: UserModel,
         private readonly _jwtService: JwtService,
     ) {}
 
     async signin(email: string, password: string, role: UserRole) {
         if (!role) throw new BadRequestException("role field is missing");
 
-        const user = await this.user.findOne({
+        const user = await this._user.findOne({
             email,
             role: { $in: [role] },
         });
@@ -39,7 +39,7 @@ export class AuthService {
         token: string;
     }> {
         /* Checking is user exist */
-        const isUserExist = await this.user.exists({
+        const isUserExist = await this._user.exists({
             email: userDetails.email,
         });
 
@@ -49,7 +49,7 @@ export class AuthService {
             );
 
         /* creating new user */
-        let newUser = new this.user(userDetails);
+        let newUser = new this._user(userDetails);
         newUser = await newUser.save();
 
         /* creating token with the payload as user's id */
