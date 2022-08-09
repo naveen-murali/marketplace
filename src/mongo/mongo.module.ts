@@ -1,4 +1,4 @@
-import { Global, Module } from "@nestjs/common";
+import { Module } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 
@@ -10,6 +10,8 @@ import {
     ItemSchema,
     CatalogSchema,
     userSchemaFactory,
+    OrderSchema,
+    Order,
 } from "./model";
 
 @Module({
@@ -21,6 +23,7 @@ import {
         MongooseModule.forFeature([
             { name: Item.name, schema: ItemSchema },
             { name: Catalog.name, schema: CatalogSchema },
+            { name: Order.name, schema: OrderSchema },
         ]),
         MongooseModule.forFeatureAsync([
             {
