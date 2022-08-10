@@ -1,10 +1,10 @@
-import { Body, Controller, ParseArrayPipe, Post } from "@nestjs/common";
+import { Body, Controller, Get, ParseArrayPipe, Post } from "@nestjs/common";
 import { Types } from "mongoose";
 
 import { ItemsDto } from "./dto";
 import { UserRole } from "src/mongo/utils";
 import { SellerService } from "./seller.service";
-import { CatalogType } from "src/mongo/interfaces";
+import { CatalogType, OrderType } from "src/mongo/interfaces";
 import { Auth, User } from "src/common/decorators";
 
 @Controller("seller")
@@ -18,5 +18,10 @@ export class SellerController {
         @User("_id") id: Types.ObjectId,
     ): Promise<CatalogType> {
         return await this._sellerService.createCatalog(id, items);
+    }
+
+    @Get("orders")
+    async orders(@User("_id") sellerId: Types.ObjectId): Promise<OrderType[]> {
+        return this._sellerService.orders(sellerId);
     }
 }
